@@ -1,0 +1,213 @@
+# Polymer Rheology ML Configuration
+
+# Data Configuration
+data:
+  raw_data_path: 'data/raw/sample_data.csv'
+  processed_data_path: 'data/processed/'
+  target_column: 'viscosity'
+
+  # Feature columns
+  feature_columns:
+    - molecular_weight
+    - pdi
+    - temperature
+    - shear_rate
+    - concentration  # optional
+
+  # Train/test split
+  test_size: 0.2
+  validation_size: 0.1
+  random_state: 42
+
+# Preprocessing Configuration
+preprocessing:
+  # Missing value handling
+  missing_value_strategy: 'mean'  # Options: 'mean', 'median', 'drop'
+
+  # Outlier detection
+  outlier_method: 'iqr'  # Options: 'iqr', 'zscore', 'none'
+  outlier_threshold: 1.5
+
+  # Normalization
+  normalization_method: 'standard'  # Options: 'standard', 'minmax', 'robust'
+
+# Feature Engineering Configuration
+feature_engineering:
+  # Polynomial features
+  create_polynomial: true
+  polynomial_degree: 2
+
+  # Interaction features
+  create_interactions: true
+  interaction_pairs:
+    - ['temperature', 'shear_rate']
+    - ['molecular_weight', 'pdi']
+
+  # Domain-specific features
+  create_domain_features: true
+  domain_features:
+    - 'log_molecular_weight'
+    - 'reciprocal_temperature'
+    - 'log_shear_rate'
+
+  # Feature selection
+  feature_selection:
+    method: 'importance'  # Options: 'importance', 'correlation', 'rfe', 'none'
+    threshold: 0.01
+
+# Model Configuration
+model:
+  # Model type
+  type: 'xgboost'  # Options: 'xgboost', 'random_forest', 'lightgbm', 'neural_network', 'svr'
+
+  # XGBoost parameters
+  xgboost:
+    n_estimators: 100
+    learning_rate: 0.1
+    max_depth: 6
+    min_child_weight: 1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    gamma: 0
+    reg_alpha: 0
+    reg_lambda: 1
+    random_state: 42
+
+  # Random Forest parameters
+  random_forest:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 5
+    min_samples_leaf: 2
+    max_features: 'sqrt'
+    random_state: 42
+
+  # LightGBM parameters
+  lightgbm:
+    n_estimators: 100
+    learning_rate: 0.1
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    random_state: 42
+
+  # Neural Network parameters
+  neural_network:
+    hidden_layers: [128, 64, 32]
+    dropout: 0.3
+    activation: 'relu'
+    batch_size: 32
+    epochs: 200
+    learning_rate: 0.001
+    early_stopping_patience: 20
+
+# Training Configuration
+training:
+  # Cross-validation
+  cv_folds: 5
+  cv_scoring: 'neg_mean_squared_error'
+
+  # Model saving
+  save_model: true
+  model_save_path: 'models/'
+
+  # Logging
+  verbose: true
+  log_file: 'logs/training.log'
+
+# Hyperparameter Optimization Configuration
+hyperparameter_optimization:
+  enabled: false
+  method: 'optuna'  # Options: 'optuna', 'grid_search', 'random_search'
+  n_trials: 100
+  timeout: 3600  # seconds
+
+  # Optuna specific
+  optuna:
+    direction: 'minimize'
+    sampler: 'TPESampler'
+    pruner: 'MedianPruner'
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - 'mse'
+    - 'rmse'
+    - 'mae'
+    - 'r2'
+    - 'mape'
+
+  # Visualization
+  plot_predictions: true
+  plot_residuals: true
+  plot_feature_importance: true
+  plot_shap: true
+
+  # Report
+  generate_report: true
+  report_path: 'reports/'
+
+# Model Interpretation Configuration
+interpretation:
+  # SHAP analysis
+  shap_analysis: true
+  shap_plot_type: 'summary'  # Options: 'summary', 'bar', 'waterfall'
+
+  # Feature importance
+  feature_importance: true
+
+  # Partial dependence
+  partial_dependence: true
+  partial_dependence_features: 3  # Number of top features
+
+# Prediction Configuration
+prediction:
+  batch_size: 1000
+  output_path: 'data/processed/predictions.csv'
+  include_confidence: true
+
+# Optimization Configuration (for formulation optimization)
+optimization:
+  algorithm: 'genetic'  # Options: 'genetic', 'pso', 'differential_evolution'
+
+  # Target properties
+  target_viscosity: 5000  # Pa·s
+
+  # Parameter bounds
+  bounds:
+    molecular_weight: [10000, 500000]
+    temperature: [150, 250]
+    shear_rate: [0.1, 1000]
+    pdi: [1.0, 3.0]
+
+  # Algorithm parameters
+  genetic_algorithm:
+    population_size: 50
+    max_iterations: 500
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+
+  pso:
+    swarm_size: 40
+    max_iterations: 500
+    inertia_weight: 0.7
+    cognitive_weight: 1.5
+    social_weight: 1.5
+
+# Logging Configuration
+logging:
+  level: 'INFO'  # Options: 'DEBUG', 'INFO', 'WARNING', 'ERROR'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  file: 'logs/app.log'
+
+# Paths
+paths:
+  data_dir: 'data/'
+  models_dir: 'models/'
+  reports_dir: 'reports/'
+  logs_dir: 'logs/'
+  figures_dir: 'reports/figures/'
+
+# Reproducibility
+seed: 42
+deterministic: true

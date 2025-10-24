@@ -1,0 +1,61 @@
+# Core scientific computing
+numpy==1.24.3
+pandas==2.0.3
+scipy==1.11.1
+
+# Machine Learning
+scikit-learn==1.3.0
+xgboost==1.7.6
+lightgbm==4.0.0
+
+# Deep Learning
+torch==2.0.1
+torchvision==0.15.2
+
+# Graph Neural Networks (optional)
+# torch-geometric==2.3.1
+# torch-scatter==2.1.1
+# torch-sparse==0.6.17
+
+# Model Interpretation
+shap==0.42.1
+
+# Hyperparameter Optimization
+optuna==3.3.0
+scikit-optimize==0.9.0
+
+# Time Series (optional)
+# prophet==1.1.4
+# skforecast==0.9.1
+
+# Optimization Algorithms
+scikit-opt==0.6.6
+
+# Visualization
+matplotlib==3.7.2
+seaborn==0.12.2
+plotly==5.16.1
+
+# Utilities
+joblib==1.3.2
+pyyaml==6.0.1
+tqdm==4.66.1
+
+# Jupyter
+jupyterlab==4.0.3
+ipywidgets==8.1.0
+
+# Testing
+pytest==7.4.0
+pytest-cov==4.1.0
+
+# Code Quality
+black==23.7.0
+flake8==6.1.0
+isort==5.12.0
+
+# Logging
+loguru==0.7.0
+
+# Data validation
+pydantic==2.1.1
